@@ -12,8 +12,9 @@ import {
   where,
   orderBy,
   serverTimestamp,
-  updateDoc
+  updateDoc,
 } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyAkjBHSFHAzZ9sS6DUS-Aw2O1ll2v_H4jU",
   authDomain: "fir-9-9c9ac.firebaseapp.com",
@@ -27,7 +28,7 @@ initializeApp(firebaseConfig);
 
 //  init services
 const db = getFirestore();
-
+const auth = getAuth();
 // collection ref
 const colRef = collection(db, "books");
 
@@ -96,18 +97,17 @@ const docRef = doc(db, "books", "ruELmw3ZoilupgCPsSeT");
 //   console.log(doc.data(), doc.id);
 // });
 
-onSnapshot(docRef,(doc)=>{
+onSnapshot(docRef, (doc) => {
   console.log(doc.data(), doc.id);
 });
-
 
 // Update book
 const updateBookForm = document.querySelector(".update");
 updateBookForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const docRef = doc(db, "books", updateBookForm.bookId.value);
-  updateDoc(docRef,{
-    title:"updated book"
+  updateDoc(docRef, {
+    title: "updated book",
   }).then(() => {
     updateBookForm.reset();
     alert("updated successfully");
