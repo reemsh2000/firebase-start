@@ -1,32 +1,60 @@
-import { initializeApp } from 'firebase/app'
+import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   collection,
-   getDocs,
-}from 'firebase/firestore'
+  getDocs,
+  addDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyAkjBHSFHAzZ9sS6DUS-Aw2O1ll2v_H4jU",
   authDomain: "fir-9-9c9ac.firebaseapp.com",
   projectId: "fir-9-9c9ac",
   storageBucket: "fir-9-9c9ac.appspot.com",
   messagingSenderId: "293634412674",
-  appId: "1:293634412674:web:47b6537e4f5a010472649b"
+  appId: "1:293634412674:web:47b6537e4f5a010472649b",
 };
 // init firebase
-initializeApp(firebaseConfig)
+initializeApp(firebaseConfig);
 
 //  init services
-const db =getFirestore();
+const db = getFirestore();
 
 // collection ref
-const colRef = collection(db,'books')
+const colRef = collection(db, "books");
 
 // get collection data
-getDocs(colRef).then((snapshot)=>{
-  let books=[]
-  snapshot.docs.forEach((doc)=>{
-     books.push({...doc.data(),id:doc.id})
+getDocs(colRef)
+  .then((snapshot) => {
+    let books = [];
+    snapshot.docs.forEach((doc) => {
+      books.push({ ...doc.data(), id: doc.id });
+    });
+    console.log(books);
   })
-  console.log(books)
-}).catch(err=>console.log(err))
+  .catch((err) => console.log(err));
 
+// Add book
+const addBookForm = document.querySelector(".add");
+addBookForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  addDoc(colRef, {
+    title: addBookForm.title.value,
+    author: addBookForm.author.value,
+  }).then(() => {
+    alert("New book added ");
+    addBookForm.reset();
+  });
+});
+
+// Delete book
+const deleteBookForm = document.querySelector(".delete");
+deleteBookForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const docRef = doc(db, "books", deleteBookForm.bookId.value);
+  deleteDoc(docRef).then(() => {
+    deleteBookForm.reset();
+    alert("deleted successfully");
+  });
+});
