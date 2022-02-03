@@ -3,10 +3,16 @@ import {
   getFirestore,
   collection,
   getDocs,
+  getDoc,
   addDoc,
   deleteDoc,
   doc,
   onSnapshot,
+  query,
+  where,
+  orderBy,
+  serverTimestamp,
+  updateDoc
 } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyAkjBHSFHAzZ9sS6DUS-Aw2O1ll2v_H4jU",
@@ -25,7 +31,17 @@ const db = getFirestore();
 // collection ref
 const colRef = collection(db, "books");
 
+// queries
+const q = query(
+  colRef,
+  where("author", "==", "Reem"),
+  orderBy("createdAt", "asc")
+);
+
+// *************************************************
+
 // // get collection data
+// يعني بيجيب الداتا , بس لو ضفت او حذفت لازم اعمل ريفرش
 // getDocs(colRef)
 //   .then((snapshot) => {
 //     let books = [];
@@ -36,8 +52,11 @@ const colRef = collection(db, "books");
 //   })
 //   .catch((err) => console.log(err));
 
-// get real time collection data
-onSnapshot(colRef, (snapshot) => {
+// *************************************************
+// To get query data
+onSnapshot(q, (snapshot) => {
+  // get real time collection data
+  //  onSnapshot(colRef, (snapshot) => {
   let books = [];
   snapshot.docs.forEach((doc) => {
     books.push({ ...doc.data(), id: doc.id });
@@ -52,6 +71,7 @@ addBookForm.addEventListener("submit", (e) => {
   addDoc(colRef, {
     title: addBookForm.title.value,
     author: addBookForm.author.value,
+    createdAt: serverTimestamp(),
   }).then(() => {
     alert("New book added ");
     addBookForm.reset();
@@ -66,5 +86,30 @@ deleteBookForm.addEventListener("submit", (e) => {
   deleteDoc(docRef).then(() => {
     deleteBookForm.reset();
     alert("deleted successfully");
+  });
+});
+
+// get a single document
+const docRef = doc(db, "books", "ruELmw3ZoilupgCPsSeT");
+
+// getDoc(docRef).then((doc) => {
+//   console.log(doc.data(), doc.id);
+// });
+
+onSnapshot(docRef,(doc)=>{
+  console.log(doc.data(), doc.id);
+});
+
+
+// Update book
+const updateBookForm = document.querySelector(".update");
+updateBookForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const docRef = doc(db, "books", updateBookForm.bookId.value);
+  updateDoc(docRef,{
+    title:"updated book"
+  }).then(() => {
+    updateBookForm.reset();
+    alert("updated successfully");
   });
 });
