@@ -94,6 +94,15 @@ button {
   background-color: #c00404;
   color: #fff;
 }
+.buttons{
+  display: flex;
+  flex-direction: column;
+}
+.unsub{
+  width: 300px;
+  background-color: rgb(140, 122, 252);
+  color: #fff;
+}
 @media (max-width:800px) {
   .form-container {
     margin: auto;
