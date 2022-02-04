@@ -61,7 +61,7 @@ const q = query(
 
 // *************************************************
 // To get query data
-onSnapshot(q, (snapshot) => {
+const unsubCol = onSnapshot(q, (snapshot) => {
   // get real time collection data
   //  onSnapshot(colRef, (snapshot) => {
   let books = [];
@@ -103,7 +103,7 @@ const docRef = doc(db, "books", "ruELmw3ZoilupgCPsSeT");
 //   console.log(doc.data(), doc.id);
 // });
 
-onSnapshot(docRef, (doc) => {
+const unsubDoc = onSnapshot(docRef, (doc) => {
   console.log(doc.data(), doc.id);
 });
 
@@ -143,7 +143,7 @@ loginForm.addEventListener("submit", (e) => {
   const password = loginForm.password.value;
   signInWithEmailAndPassword(auth, email, password)
     .then((cred) => {
-  /*     console.log("user logged in", cred.user); */
+      /*     console.log("user logged in", cred.user); */
     })
     .catch((err) => console.log(err));
 });
@@ -153,7 +153,7 @@ const logoutButton = document.querySelector(".logout");
 logoutButton.addEventListener("click", () => {
   signOut(auth)
     .then(() => {
-      console.log("user signed out"); 
+      console.log("user signed out");
     })
     .catch((err) => {
       console.log(err.message);
@@ -161,6 +161,14 @@ logoutButton.addEventListener("click", () => {
 });
 
 /* Subscribing to auth changes  */
-onAuthStateChanged(auth,(user )=>{
-console.log('user status changed',user)
-})
+const unsubAuth = onAuthStateChanged(auth, (user) => {
+  console.log("user status changed", user);
+});
+/* Un subscribing from auth/db changes */
+const unsubscribeBrn = document.querySelector(".unsub");
+unsubscribeBrn.addEventListener("click", () => {
+  console.log("unsubscribing");
+  unsubCol();
+  unsubDoc();
+  unsubAuth();
+});
