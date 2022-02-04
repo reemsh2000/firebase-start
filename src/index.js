@@ -14,7 +14,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyAkjBHSFHAzZ9sS6DUS-Aw2O1ll2v_H4jU",
   authDomain: "fir-9-9c9ac.firebaseapp.com",
@@ -112,4 +112,19 @@ updateBookForm.addEventListener("submit", (e) => {
     updateBookForm.reset();
     alert("updated successfully");
   });
+});
+
+// Signup
+const signupForm = document.querySelector(".signup");
+signupForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const email = signupForm.email.value;
+  const password = signupForm.password.value;
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((cred) => {
+      console.log("user created", cred.user);
+      signupForm.reset();
+      alert("sign up successfully");
+    })
+    .catch((err) => console.log(err));
 });
