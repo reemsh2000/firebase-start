@@ -140,10 +140,15 @@ loginForm.addEventListener("submit", (e) => {
 });
 
 /* Logout */
-const logoutBtn = document.querySelector(".logout");
-logoutBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  signOut(auth)
-    .then(() => console.log("User loged out"))
-    .catch((err) => console.log(err));
+const logoutButton = document.getElementById("logout");
+logoutButton.style.color="#000"
+logoutButton.addEventListener("click", () => {
+  console.log('clicked')
+/*   signOut(auth)
+    .then(() => {
+      console.log("user signed out");
+    })
+    .catch((err) => {
+      console.log(err.message);
+    }); */
 });
