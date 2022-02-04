@@ -32,6 +32,7 @@ form {
   padding: 25px;
   display: flex;
   flex-direction: column;
+  margin: 10px 0;
 }
 
 .form-title {
@@ -77,19 +78,24 @@ button {
   background-color: #3577f1;
   color: #fff;
 }
-
-.signup {
-  margin: 35px ;
-  border: 2px dotted #3577f1;
-  align-self: flex-start;
+.login,.signup{
+  border-top: 2px solid rgb(179, 176, 174);
 }
-.signup button:hover {
-  background-color: #fc5c65;
+.signup button:hover,
+.login button:hover {
+  background-color: #f83e47;
+  color: #fff;
+}
+.login button:hover{
+  background: #446803;
+}
+.logout{
+  width:150px;
+  background-color: #c00404;
   color: #fff;
 }
 @media (max-width:800px) {
   .form-container {
-    flex-direction: column;
     margin: auto;
   }
 
@@ -98,7 +104,7 @@ button {
   }
 
   .page-title {
-    font-size: 24px;
+    font-size: 20px;
     margin: 15px 0;
   }
 
